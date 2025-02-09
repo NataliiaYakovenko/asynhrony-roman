@@ -24,11 +24,13 @@ function fun(){
 }
 const timeoutID = setTimeout(fun,2000);
 clearTimeout(timeoutID) // - видалення Timeout
-
-// let calculation = 1;
-// for(let i = 0; i <1000000000; i++){
-// calculation *=5;
-// }
-// console.log(calculation);
-
-//setTimeout(function(){console.log('loggin');},3000)
+//-----------------------------------------------
+/*Задача.
+Потрібно написати функцію, яка вітає user 
+alert('Hello user!')
+Вітати функція має не одразу, а тільки через 8 секунд,
+пісял того, як сторінка завантажиться
+*/
+const greetingUser = setTimeout(function greetUser(){
+  alert('Hello user!');
+}, 8000)
