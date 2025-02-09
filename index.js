@@ -1,64 +1,20 @@
-'use strict'
+"use strict";
 
-/*
-Event loop - це механізм, який керує виконанням коду
+const user = {
+  firstName: "Nataliia",
+  lastName: "Yakovenko",
+  age: 41,
+  footSize: 36,
+};
+//JSON це позначення об'єктів JS,для перекладання даних в JSON, 
+ //щоб ці дані можна було прочитати на інших мовах програмування
 
-Концептуально, ідея Event loop полягає в тому,
-щоб не заблокувати основний потік даних.
+// метод stringify() - перетворює об'єкт JS в JSON
 
-Технічно, ця концепція реалізується через Coogle Chrome,
-який написан на програмі С++
+//метод parse() - перетворює об'єкт JSON в об'єкт JS 
+console.log(user);
+const jsonString = JSON.stringify(user)  //перетворюємо об'єкт JS в JSON
+console.log(jsonString);
 
-*/
-//setTimeout() - це визов функції або виконання фрагменту після затримки
-//setTimeout()  виконує функцію ОДИН раз після затримки
-/*
-Алгоритм setTimeout():
-1. Завантажується сторінка
-2. Реєструємо Timeout
-3. Після того, як пройде затримка - запускаємо якусь функцію
-setTimeout() приймає функцію і затримку
-*/
-
-function fun(){
-     //console.log(2+2);
-}
-const timeoutID = setTimeout(fun,2000);
-clearTimeout(timeoutID) // - видалення Timeout
-//-----------------------------------------------
-/*Задача.
-Потрібно написати функцію, яка вітає user 
-alert('Hello user!')
-Вітати функція має не одразу, а тільки через 8 секунд,
-пісял того, як сторінка завантажиться
-*/
-const greetingUser = setTimeout(function greetUser(){
-  //alert('Hello user!');
-}, 8000)
-//--------------------------------------------------------------
-// setInterval()- виконуватиме функцію багато разів з якоюсь затримкою
-const intervalID = setInterval(()=>{
-     //console.log('loggin');
-},3000)
-//--------------------------------------------------------------
-/*
-Задача 
-Написати функцію, яка через кожну секунду буде виводити числа  в консоль з 1 ло 10
-Виконати задачу циклами не можемо
-Потрібно виконанти задачу через інтервали
-Перевірити скільки секунд ми витрачаємо на виконання цієї функції
-*/
-
-function counter(){
-  let i = 1;
-  const intervalID = setInterval(()=>{
-     console.log(i++);
-     if(i>10){
-          clearInterval(intervalID)
-          console.timeEnd('timer')
-     }
-  },1000)
-}
-
-console.time('timer') //показує скільки часу витарічаємо на виконання функції
-counter()
+const jsonParse = JSON.parse(jsonString) //перетворюєм об'єкт JSON в об'єкт JS 
+console.log(jsonParse);
