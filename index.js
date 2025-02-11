@@ -1,25 +1,25 @@
 "use strict";
 
-fetch("./user.json")
-  .then((response) => {
-    return response.json(); // перетворюємо 0 і 1 на js об'єкт
-  })
-  .then((data) => {
-    console.log(data);
-  })
-  .catch((error)=>{
+const promise = new Promise(executor); // стан pending
+
+function executor(resolve, reject) {
+  //задача: згенерувати випадкове ціле число в діапазоні від 0 до 15
+  const number = Math.floor(Math.random() * 15);
+  //якщо число кратне 2, ми резолвемо promise та повертаємо це число
+  //якщо число не кратне 2, реджектимо promise та повертаємо помилку
+  if (number % 2 === 0) {
+    resolve(number); // стан fulfilld
+  } else {
+    const err = new RangeError(`Error happened: ${number}`);
+    reject(err);  // стан reject
+  }
+}
+
+promise.then(
+  (number) => {
+    console.log(number);
+  },
+  (error) => {
     console.log(error);
-  })
-  .finally(()=>{
-    console.log('finally quastion closed')
-  });
-//----------------------------------------------------
-
-
-  fetch("https://api.monobank.ua/bank/currency")
-  .then((response) => {
-    return response.json(); 
-  })
-  .then((data) => {
-    console.log(data);
-  });
+  }
+);
