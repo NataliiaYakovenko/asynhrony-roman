@@ -1,56 +1,82 @@
 "use strict";
 
-function loadImage(src) {
-  //1. Створюємо саму картинку
-  const img = document.createElement("img");
-  img.setAttribute("src", src);
+/*
+https://api.openweathermap.org/data/2.5/weather?q=Zaporizhzhia&appid=f7c576ba3699bdd0b98ddcf196639992&units=metric
 
-  //2. Створюємо елемент у верстці, який буде слугувати нам для того,
-  // щоб вказувати, чи завантажуємо ми щось чи ні
-  const h2 = document.createElement("h2");
-  h2.id = "loading-h2";
-  h2.append("loading image......");
-  document.body.append(h2);
+f7c576ba3699bdd0b98ddcf196639992
 
-  //3. Повертаємо promise
-  //Промісифікаці - коли ми огортаємо якийсь асинхронний код в promise
-  //для забезпечення собі зручну роботу
-  return new Promise((resolve, regect) => {
-    //Створюємо таймаут на 5 секунд для завантаження картинки
-    const timeoutId = setTimeout(() => {
-      regect("Time to download is up");
-    }, 3000);
+Задача
+Зробити погодний віджет
+Алгоритм вирішення:
+- Зробити верстку елементів, які отримують від користувача дані про місто
+- Отримати дані з API і обробити їх (підготувати дані для відмалювання у вертці)
+- Зробити карту з погодою і відобразити її
+*/
 
-    //Підписуємо створену картинку на подію load
-    //якщо картинка завантажиться - ми resolve promise з елементом картинки
-    img.addEventListener("load", () => {
-      clearTimeout(timeoutId);
-      resolve(img);
-    });
+const API_KEY = "f7c576ba3699bdd0b98ddcf196639992";
+const API_BASE = "https://api.openweathermap.org/data/2.5/weather";
 
-    //Підписуємо створену картинку на подію error
-    //якщо картинка не завантажиться - ми regect promise з повідомленням про помилку
-    img.addEventListener("error", () => {
-      clearTimeout(timeoutId);
-      regect("Image can`t be loaded");
-    });
-  });
+const btn = document.querySelector(".btn");
+
+btn.addEventListener("click", buttonClickHandler);
+
+function buttonClickHandler({ target }) {
+  const selectValue = target.previousElementSibling.value;
+  console.log(selectValue);
+  requestApi(selectValue);
 }
 
-loadImage(
-  "https://www.akc.org/wp-content/uploads/2018/05/Three-Australian-Shepherd-puppies-sitting-in-a-field.jpg"
-)
-  .then(
-    (img) => {
-      document.body.append(img);
-    },
-    (errorMessage) => {
-      const h2 = document.createElement("h2");
-      h2.append(errorMessage);
-      document.body.append(h2);
-    }
-  )
-  .finally(() => {
-    const loadingH2 = document.querySelector("#loading-h2");
-    loadingH2.remove();
-  });
+function requestApi(cityName) {
+  //Готуємо url
+  const url = `${API_BASE}?q=${cityName}&appid=${API_KEY}&units=metric`;
+  console.log(url);
+
+  //Робимо запит
+  fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      //Відмальовуємо погоду
+      displayWeather(data)
+    
+    });
+}
+
+/*
+<article class="weather">
+        <p>City name: Kyiv</p>
+        <p>Temperature: 7℃</p>
+        <p>Weather description: overcast cloud</p>
+      </article>
+
+*/
+
+function displayWeather(weatherObject){
+  const{name,main:{temp},weather:[{description}]}=weatherObject
+
+  //Створюємо article
+  const article = document.createElement('article')
+  article.classList.add('weather')
+
+  //Створюємо параграф з назвою міста
+  const cityName = document.createElement('p')
+  cityName.append(`City name:${name}`)
+
+  //Створюємо параграф з температурою
+  const temperature = document.createElement('p')
+  temperature.append(`Temperature: ${temp}℃`)
+
+  //Створюємо параграф  з описом погоди
+  const descriptionWeather = document.createElement('p')
+  descriptionWeather.append(`Weather description: ${description}`)
+
+  //До article чіпляємо параграфи, які були створені
+  article.append(cityName,temperature,descriptionWeather)
+
+  //До section чіпляємо article
+  const section = document.querySelector('.wrapper')
+  section.append(article);
+
+
+}
