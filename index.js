@@ -37,46 +37,29 @@ function requestApi(cityName) {
       return response.json();
     })
     .then((data) => {
+      console.log(data);
       //Відмальовуємо погоду
       displayWeather(data)
     
     });
 }
 
-/*
-<article class="weather">
-        <p>City name: Kyiv</p>
-        <p>Temperature: 7℃</p>
-        <p>Weather description: overcast cloud</p>
-      </article>
-
-*/
 
 function displayWeather(weatherObject){
   const{name,main:{temp},weather:[{description}]}=weatherObject
 
-  //Створюємо article
-  const article = document.createElement('article')
-  article.classList.add('weather')
+  const article = document.querySelector('#weather-box');
+  article.classList.add('weather-display');
 
-  //Створюємо параграф з назвою міста
-  const cityName = document.createElement('p')
-  cityName.append(`City name:${name}`)
+  const city = document.querySelector('#city');
+  city.textContent= name;
 
-  //Створюємо параграф з температурою
-  const temperature = document.createElement('p')
-  temperature.append(`Temperature: ${temp}℃`)
+  const temperature = document.querySelector('#temp');
+  temperature.textContent= `${temp} ℃`;
 
-  //Створюємо параграф  з описом погоди
-  const descriptionWeather = document.createElement('p')
-  descriptionWeather.append(`Weather description: ${description}`)
+  const descrip = document.querySelector('#description');
+  descrip.textContent = description;
 
-  //До article чіпляємо параграфи, які були створені
-  article.append(cityName,temperature,descriptionWeather)
-
-  //До section чіпляємо article
-  const section = document.querySelector('.wrapper')
-  section.append(article);
 
 
 }

@@ -17,11 +17,13 @@
   align-items: center;
 }
 
-.btn {
+.weather {
+  display: none;
+  margin: 10px;
+  padding: 10px;
+  border: 2px solid black;
 }
 
-.weather {
-    margin: 10px;
-    padding: 10px;
-    border: 2px solid black;
+.weather-display{
+  display: block;
 }
